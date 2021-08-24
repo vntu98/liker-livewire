@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\PostCreated;
 use Livewire\Component;
 
 class PostForm extends Component
@@ -16,7 +17,9 @@ class PostForm extends Component
     {
         $this->validate($this->rules);
 
-        auth()->user()->posts()->create(['body' => $this->body]);
+        $post = auth()->user()->posts()->create(['body' => $this->body]);
+
+        broadcast(new PostCreated($post));
 
         $this->body = '';
     }

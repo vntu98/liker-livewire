@@ -41,4 +41,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function profilePhoto()
+    {
+        if (!$this->profile_photo) {
+            return $this->defaultProfilePhotoUrl();
+        }
+
+        return '';
+    }
+
+    public function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
